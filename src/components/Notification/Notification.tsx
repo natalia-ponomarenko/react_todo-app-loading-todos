@@ -1,20 +1,38 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-export const Notification:React.FC = () => {
-  // todo interface for notifications
-  /* Notification is shown in case of any error */
+import classnames from 'classnames';
+import { useEffect } from 'react';
+import { Error as ErrorType } from '../../types/Error';
 
-  /* Add the 'hidden' class to hide the message smoothly */
+/* eslint-disable jsx-a11y/control-has-associated-label */
+type Props = {
+  errorType: ErrorType;
+  closeNotification: () => void;
+  isHidden: boolean;
+};
+export const Notification: React.FC<Props> = ({
+  errorType,
+  closeNotification,
+  isHidden,
+}) => {
+  useEffect(() => {
+    setTimeout(() => {
+      closeNotification();
+    }, 3000);
+  }, []);
 
   return (
-    <div className="notification is-danger is-light has-text-weight-normal">
-      <button type="button" className="delete" />
-
-      {/* show only one message at a time */}
-      Unable to add a todo
-      <br />
-      Unable to delete a todo
-      <br />
-      Unable to update a todo
+    <div
+      className={classnames(
+        'notification',
+        'is-danger',
+        'is-light',
+        'has-text-weight-normal',
+        {
+          hidden: isHidden,
+        },
+      )}
+    >
+      <button type="button" className="delete" onClick={closeNotification} />
+      {errorType}
     </div>
   );
 };

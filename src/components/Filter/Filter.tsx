@@ -1,80 +1,48 @@
 import { useState } from 'react';
 import classnames from 'classnames';
+import { Filter as FilterType } from '../../types/Filter';
 
 type Props = {
-  notCompleted: number,
-  completed: number,
-  changeFilter: (filter: string) => void,
+  notCompleted: number;
+  completed: number;
+  changeFilter: (filter: FilterType) => void;
 };
 
-export const Filter:React.FC<Props> = (
-  {
-    notCompleted,
-    completed,
-    changeFilter,
-  },
-) => {
-  const [selected, setSelected] = useState('all');
+export const Filter: React.FC<Props> = ({
+  notCompleted,
+  completed,
+  changeFilter,
+}) => {
+  const [selected, setSelected] = useState(FilterType.ALL);
 
-  const handleClick = (value: string) => {
+  const handleClick = (value: FilterType) => {
     changeFilter(value);
     setSelected(value);
   };
 
+  const filters = [FilterType.ALL, FilterType.ACTIVE, FilterType.COMPLETED];
+
   return (
-    // todo loop of filters
-    // todo interface for filterTypes
     <footer className="todoapp__footer">
-      <span className="todo-count">
-        {`${notCompleted} items left`}
-      </span>
+      <span className="todo-count">{`${notCompleted} items left`}</span>
 
       <nav className="filter">
-        <a
-          href="#/"
-          className={classnames(
-            'filter__link',
-            {
-              selected: selected === 'all',
-            },
-          )}
-          onClick={() => handleClick('all')}
-        >
-          All
-        </a>
-
-        <a
-          href="#/active"
-          className={classnames(
-            'filter__link',
-            {
-              selected: selected === 'active',
-            },
-          )}
-          onClick={() => handleClick('active')}
-        >
-          Active
-        </a>
-
-        <a
-          href="#/completed"
-          className={classnames(
-            'filter__link',
-            {
-              selected: selected === 'completed',
-            },
-          )}
-          onClick={() => handleClick('completed')}
-        >
-          Completed
-        </a>
+        {filters.map((filter) => (
+          <a
+            href={`#/${filter.toLowerCase()}`}
+            key={filter}
+            className={classnames('filter__link', {
+              selected: selected === filter,
+            })}
+            onClick={() => handleClick(filter)}
+          >
+            {filter}
+          </a>
+        ))}
       </nav>
 
       {completed > 0 && (
-        <button
-          type="button"
-          className="todoapp__clear-completed"
-        >
+        <button type="button" className="todoapp__clear-completed">
           Clear completed
         </button>
       )}

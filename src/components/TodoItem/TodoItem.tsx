@@ -5,24 +5,22 @@ type Props = {
   todo: Todo,
 };
 
-export const TodoItem:React.FC<Props> = (
-  {
-    todo,
-  },
-) => {
+export const TodoItem: React.FC<Props> = ({ todo }) => {
   const { title, completed } = todo;
 
   return (
-    <div className={classnames({
-      todo: true,
-      completed,
-    })}
+    <div className={classnames(
+      'todo', {
+        completed,
+      },
+    )}
     >
       <label className="todo__status-label">
         <input
           type="checkbox"
           className="todo__status"
           checked={completed}
+          onChange={() => {}}
         />
       </label>
 
@@ -33,6 +31,11 @@ export const TodoItem:React.FC<Props> = (
       >
         ×
       </button>
+
+      <div className="modal overlay">
+        <div className="modal-background has-background-white-ter" />
+        <div className="loader" />
+      </div>
     </div>
   );
 };
